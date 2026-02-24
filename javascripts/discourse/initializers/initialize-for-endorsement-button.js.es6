@@ -1,7 +1,6 @@
 import I18n from "I18n";
 import { withPluginApi } from "discourse/lib/plugin-api";
-const { iconNode } = require("discourse-common/lib/icon-library");
-import showModal from "discourse/lib/show-modal";
+import EndorsementHeaderButton from "../components/endorsement-header-button";
 
 export default {
   name: "endorsement-button",
@@ -14,31 +13,12 @@ export default {
       if (!currentUser) {
         return;
       }
-      if (currentUser) {
-        api.decorateWidget("header-buttons:after", (helper) => {
-          const ntb_text = settings.New_topic_button_text,
-            ntb_title = settings.New_topic_button_title.length
-              ? settings.New_topic_button_title
-              : ntb_text,
-            ntb_icon = settings.New_topic_button_icon,
-            ntb_button_class = "btn btn-default btn btn-icon-text",
-            ntb_button_helper = "button#new-create-topic",
-            ntb_label_helper = "span.d-button-label";
-          const displayModal = () => {
-            showModal("customModal", {});
-          };
 
-          return helper.h(
-            ntb_button_helper,
-            {
-              className: ntb_button_class,
-              title: ntb_title,
-              onclick: displayModal,
-            },
-            [iconNode(ntb_icon), helper.h(ntb_label_helper, ntb_text)],
-          );
-        });
+      if (!api.headerButtons?.add) {
+        return;
       }
+
+      api.headerButtons.add("endorsement-button", EndorsementHeaderButton);
     });
   },
 };
